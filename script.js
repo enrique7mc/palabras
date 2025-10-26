@@ -4,6 +4,9 @@ let currentTile = 0;
 let currentGuess = '';
 let gameOver = false;
 let targetWord = '';
+let gameMode = 'daily'; // 'daily', 'practice', 'tutorial'
+let tutorialStep = 0;
+let tutorialHints = [];
 
 // Keyboard layout for Spanish
 const keys = [
@@ -28,6 +31,19 @@ function getWordOfDay() {
     return normalize(WORDS[wordIndex]);
 }
 
+// Get random word for practice mode
+function getRandomWord() {
+    const randomIndex = Math.floor(Math.random() * WORDS.length);
+    return normalize(WORDS[randomIndex]);
+}
+
+// Get tutorial word (easier, common word)
+function getTutorialWord() {
+    const tutorialWords = ['CASA', 'GATO', 'PERRO', 'LIBRO', 'AGUA', 'MESA', 'SILLA', 'FLOR'];
+    const randomIndex = Math.floor(Math.random() * tutorialWords.length);
+    return tutorialWords[randomIndex];
+}
+
 // Initialize game
 function init() {
     targetWord = getWordOfDay();
@@ -36,6 +52,83 @@ function init() {
     createKeyboard();
     setupEventListeners();
     loadStats();
+    checkFirstTimeUser();
+}
+
+// Check if first time user
+function checkFirstTimeUser() {
+    const hasPlayed = localStorage.getItem('palabras-has-played');
+    if (!hasPlayed) {
+        setTimeout(() => {
+            document.getElementById('tutorial-modal').classList.remove('hidden');
+        }, 500);
+    }
+}
+
+// Start new practice game
+function startPracticeGame() {
+    gameMode = 'practice';
+    targetWord = getRandomWord();
+    console.log('Palabra práctica:', targetWord); // For debugging
+    resetGame();
+    updateUI();
+}
+
+// Start tutorial
+function startTutorial() {
+    gameMode = 'tutorial';
+    tutorialStep = 0;
+    targetWord = getTutorialWord();
+    console.log('Palabra tutorial:', targetWord); // For debugging
+    resetGame();
+    updateUI();
+    showTutorialHint();
+}
+
+// Reset game board
+function resetGame() {
+    currentRow = 0;
+    currentTile = 0;
+    currentGuess = '';
+    gameOver = false;
+
+    // Clear board
+    const board = document.getElementById('game-board');
+    board.innerHTML = '';
+    createBoard();
+
+    // Reset keyboard
+    const keys = document.querySelectorAll('.key');
+    keys.forEach(key => {
+        key.classList.remove('correct', 'present', 'absent');
+    });
+
+    // Clear message
+    document.getElementById('message').textContent = '';
+    document.getElementById('message').className = 'message';
+}
+
+// Update UI based on game mode
+function updateUI() {
+    const subtitle = document.getElementById('subtitle');
+    const dailyBtn = document.getElementById('daily-mode-btn');
+    const practiceBtn = document.getElementById('practice-mode-btn');
+    const newGameBtn = document.getElementById('new-game-btn');
+    const nextWordTimer = document.getElementById('next-word-timer');
+
+    if (gameMode === 'daily') {
+        subtitle.textContent = 'Adivina la palabra del día';
+        dailyBtn.classList.add('active');
+        practiceBtn.classList.remove('active');
+        newGameBtn.classList.add('hidden');
+        if (nextWordTimer) nextWordTimer.style.display = 'block';
+    } else {
+        subtitle.textContent = gameMode === 'tutorial' ? '🎓 Modo Tutorial' : '🎮 Modo Práctica';
+        dailyBtn.classList.remove('active');
+        practiceBtn.classList.add('active');
+        newGameBtn.classList.remove('hidden');
+        if (nextWordTimer) nextWordTimer.style.display = 'none';
+    }
 }
 
 // Create game board
@@ -91,8 +184,14 @@ function setupEventListeners() {
     // Modal controls
     const statsBtn = document.getElementById('stats-btn');
     const helpBtn = document.getElementById('help-btn');
+    const newGameBtn = document.getElementById('new-game-btn');
+    const dailyModeBtn = document.getElementById('daily-mode-btn');
+    const practiceModeBtn = document.getElementById('practice-mode-btn');
     const statsModal = document.getElementById('stats-modal');
     const helpModal = document.getElementById('help-modal');
+    const tutorialModal = document.getElementById('tutorial-modal');
+    const startTutorialBtn = document.getElementById('start-tutorial-btn');
+    const skipTutorialBtn = document.getElementById('skip-tutorial-btn');
     const closeButtons = document.querySelectorAll('.close');
 
     statsBtn.addEventListener('click', () => {
@@ -104,10 +203,37 @@ function setupEventListeners() {
         helpModal.classList.remove('hidden');
     });
 
+    newGameBtn.addEventListener('click', () => {
+        startPracticeGame();
+    });
+
+    dailyModeBtn.addEventListener('click', () => {
+        gameMode = 'daily';
+        targetWord = getWordOfDay();
+        resetGame();
+        updateUI();
+    });
+
+    practiceModeBtn.addEventListener('click', () => {
+        startPracticeGame();
+    });
+
+    startTutorialBtn.addEventListener('click', () => {
+        tutorialModal.classList.add('hidden');
+        localStorage.setItem('palabras-has-played', 'true');
+        startTutorial();
+    });
+
+    skipTutorialBtn.addEventListener('click', () => {
+        tutorialModal.classList.add('hidden');
+        localStorage.setItem('palabras-has-played', 'true');
+    });
+
     closeButtons.forEach(btn => {
         btn.addEventListener('click', () => {
             statsModal.classList.add('hidden');
             helpModal.classList.add('hidden');
+            tutorialModal.classList.add('hidden');
         });
     });
 
@@ -118,6 +244,10 @@ function setupEventListeners() {
         }
         if (e.target === helpModal) {
             helpModal.classList.add('hidden');
+        }
+        if (e.target === tutorialModal) {
+            tutorialModal.classList.add('hidden');
+            localStorage.setItem('palabras-has-played', 'true');
         }
     });
 }
@@ -143,6 +273,11 @@ function addLetter(letter) {
         tile.classList.add('filled');
         currentGuess += letter;
         currentTile++;
+
+        // Tutorial hint: when first word is complete
+        if (gameMode === 'tutorial' && tutorialStep === 0 && currentTile === 5) {
+            advanceTutorial();
+        }
     }
 }
 
@@ -178,22 +313,45 @@ function submitGuess() {
     // Check letters
     checkWord();
 
+    // Advance tutorial hint after each guess
+    if (gameMode === 'tutorial') {
+        advanceTutorial();
+    }
+
     if (normalizedGuess === targetWord) {
         gameOver = true;
-        showMessage('¡Excelente! 🎉', 'success');
-        updateStats(true, currentRow + 1);
-        setTimeout(() => {
-            document.getElementById('stats-modal').classList.remove('hidden');
-            showStats();
-        }, 2000);
+        const messages = {
+            'daily': '¡Excelente! 🎉',
+            'practice': '¡Muy bien! 🎉 ¿Otra práctica?',
+            'tutorial': '🎓 ¡Perfecto! Has completado el tutorial. Ahora puedes jugar el modo diario o seguir practicando.'
+        };
+        showMessage(messages[gameMode], 'success');
+
+        // Only update stats in daily mode
+        if (gameMode === 'daily') {
+            updateStats(true, currentRow + 1);
+            setTimeout(() => {
+                document.getElementById('stats-modal').classList.remove('hidden');
+                showStats();
+            }, 2000);
+        }
     } else if (currentRow === 5) {
         gameOver = true;
-        showMessage(`La palabra era: ${targetWord}`, 'error');
-        updateStats(false, 0);
-        setTimeout(() => {
-            document.getElementById('stats-modal').classList.remove('hidden');
-            showStats();
-        }, 2000);
+        const messages = {
+            'daily': `La palabra era: ${targetWord}`,
+            'practice': `La palabra era: ${targetWord}. ¡Inténtalo de nuevo!`,
+            'tutorial': `La palabra era: ${targetWord}. No te preocupes, sigue practicando.`
+        };
+        showMessage(messages[gameMode], 'error');
+
+        // Only update stats in daily mode
+        if (gameMode === 'daily') {
+            updateStats(false, 0);
+            setTimeout(() => {
+                document.getElementById('stats-modal').classList.remove('hidden');
+                showStats();
+            }, 2000);
+        }
     } else {
         currentRow++;
         currentTile = 0;
@@ -341,6 +499,35 @@ function showStats() {
 
     document.getElementById('next-word-timer').textContent =
         `Próxima palabra en ${hours}h ${minutes}m ${seconds}s`;
+}
+
+// Tutorial hints system
+function showTutorialHint() {
+    if (gameMode !== 'tutorial') return;
+
+    const hints = [
+        '💡 Escribe cualquier palabra de 5 letras usando el teclado. Intenta con palabras comunes como CASA, GATO o LIBRO.',
+        '💡 ¡Bien hecho! Ahora presiona ENTER para enviar tu palabra. Los colores te mostrarán qué tan cerca estás.',
+        '💡 🟩 Verde = letra correcta en posición correcta<br>🟨 Amarillo = letra correcta pero en otra posición<br>⬜ Gris = letra no está en la palabra',
+        '💡 Usa la información de los colores para tu siguiente intento. Las letras verdes ya están en su lugar correcto.',
+        '💡 Sigue probando palabras que incluyan las letras amarillas en diferentes posiciones.',
+        '💡 ¡Excelente trabajo! Sigue así hasta adivinar la palabra completa.'
+    ];
+
+    const messageDiv = document.getElementById('message');
+    if (tutorialStep < hints.length) {
+        messageDiv.innerHTML = hints[tutorialStep];
+        messageDiv.className = 'message show';
+    }
+}
+
+function advanceTutorial() {
+    if (gameMode !== 'tutorial') return;
+
+    tutorialStep++;
+    setTimeout(() => {
+        showTutorialHint();
+    }, 2500);
 }
 
 // Initialize game when page loads
