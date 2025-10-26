@@ -589,7 +589,7 @@ function showTutorialHint() {
   if (gameMode !== "tutorial") return;
 
   const hints = [
-    "💡 Escribe cualquier palabra de 5 letras usando el teclado. Intenta con palabras comunes como CASA, GATO o LIBRO.",
+    "💡 Escribe cualquier palabra de 5 letras usando el teclado. Intenta con palabras comunes como PERRO, HOGAR o LIBRO.",
     "💡 ¡Bien hecho! Ahora presiona ENTER para enviar tu palabra. Los colores te mostrarán qué tan cerca estás.",
     "💡 🟩 Verde = letra correcta en posición correcta<br>🟨 Amarillo = letra correcta pero en otra posición<br>⬜ Gris = letra no está en la palabra",
     "💡 Usa la información de los colores para tu siguiente intento. Las letras verdes ya están en su lugar correcto.",
