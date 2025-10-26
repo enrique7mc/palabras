@@ -41,6 +41,42 @@ h1 {
 .subtitle {
     font-size: 14px;
     color: #818384;
+    margin-bottom: 15px;
+}
+
+.mode-toggle {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.mode-btn {
+    padding: 8px 20px;
+    border: 2px solid #3a3a3c;
+    border-radius: 20px;
+    background-color: transparent;
+    color: #818384;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.mode-btn:hover {
+    border-color: #565758;
+    color: #d7dadc;
+}
+
+.mode-btn.active {
+    background-color: #538d4e;
+    border-color: #538d4e;
+    color: #ffffff;
+}
+
+.mode-btn.active:hover {
+    background-color: #6aaa64;
+    border-color: #6aaa64;
 }
 
 #game-board {
@@ -218,6 +254,18 @@ h1 {
     background-color: #565758;
 }
 
+#new-game-btn {
+    background-color: #538d4e;
+}
+
+#new-game-btn:hover {
+    background-color: #6aaa64;
+}
+
+#new-game-btn.hidden {
+    display: none;
+}
+
 .modal {
     display: flex;
     position: fixed;
@@ -321,6 +369,71 @@ h1 {
     margin-top: 20px;
     font-size: 18px;
     color: #d7dadc;
+}
+
+.tutorial-options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 30px 0;
+}
+
+.tutorial-btn {
+    padding: 15px 30px;
+    border: none;
+    border-radius: 8px;
+    background-color: #3a3a3c;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.tutorial-btn:hover {
+    background-color: #565758;
+    transform: translateY(-2px);
+}
+
+.tutorial-btn.primary {
+    background-color: #538d4e;
+}
+
+.tutorial-btn.primary:hover {
+    background-color: #6aaa64;
+}
+
+.tutorial-info {
+    background-color: #1a1a1b;
+    border-left: 3px solid #538d4e;
+    padding: 15px;
+    border-radius: 4px;
+    margin-top: 20px;
+}
+
+.tutorial-info ul {
+    margin: 15px 0;
+    padding-left: 25px;
+}
+
+.tutorial-info li {
+    margin: 8px 0;
+    color: #d7dadc;
+}
+
+#tutorial-hint {
+    background-color: #2a2a2b;
+    border: 1px solid #538d4e;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 15px 0;
+    text-align: center;
+    font-size: 14px;
+    color: #d7dadc;
+}
+
+#tutorial-hint strong {
+    color: #6aaa64;
 }
 
 @media (max-width: 480px) {
