@@ -1,0 +1,47 @@
+name: Keep Sorted
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  keep-sorted:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install keep-sorted
+        run: |
+          go install github.com/google/keep-sorted/cmd/keep-sorted@latest
+
+      - name: Run keep-sorted
+        run: |
+          ~/go/bin/keep-sorted --mode fix words.js
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if ! git diff --exit-code words.js; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit changes
+        if: steps.changes.outputs.changed == 'true' && github.event_name == 'push'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add words.js
+          git commit -m "Auto-sort words with keep-sorted"
+          git push
+
+      - name: Fail if PR has unsorted words
+        if: steps.changes.outputs.changed == 'true' && github.event_name == 'pull_request'
+        run: |
+          echo "::error::Words are not sorted. Please run 'keep-sorted --mode fix words.js' locally and commit the changes."
+          exit 1

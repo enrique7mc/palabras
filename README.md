@@ -53,6 +53,48 @@ cd palabras
 open index.html
 ```
 
+## Mantenimiento de las listas de palabras
+
+Este proyecto usa [keep-sorted](https://github.com/google/keep-sorted) para mantener las listas de palabras ordenadas alfabéticamente.
+
+### Uso local
+
+Para mantener las palabras ordenadas localmente:
+
+1. Instala keep-sorted:
+   ```bash
+   go install github.com/google/keep-sorted@latest
+   ```
+
+   (Opcional) Agrega Go bin a tu PATH para usar `keep-sorted` sin la ruta completa:
+   ```bash
+   echo 'export PATH="$HOME/go/bin:$PATH"' >> ~/.zshrc
+   source ~/.zshrc
+   ```
+
+2. Ordena las palabras:
+   ```bash
+   ~/go/bin/keep-sorted --mode fix words.js
+   ```
+
+   O si tienes `~/go/bin` en tu PATH:
+   ```bash
+   keep-sorted --mode fix words.js
+   ```
+
+### Automático en GitHub
+
+Las palabras se ordenan automáticamente mediante GitHub Actions cuando se hace push a la rama `main`. Si intentas hacer un pull request con palabras desordenadas, el CI fallará y te pedirá que las ordenes localmente.
+
+### Agregar nuevas palabras
+
+1. Abre `words.js`
+2. Agrega nuevas palabras de 5 letras en cualquier lugar dentro de las secciones marcadas con `// keep-sorted`
+3. Ejecuta `~/go/bin/keep-sorted --mode fix words.js` para ordenarlas
+4. Haz commit de los cambios
+
+El juego automáticamente valida que todas las palabras tengan exactamente 5 letras.
+
 ## Desarrollo futuro
 
 Posibles mejoras:
