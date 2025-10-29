@@ -16,7 +16,7 @@ jobs:
 
       - name: Install keep-sorted
         run: |
-          go install github.com/google/keep-sorted/cmd/keep-sorted@latest
+          go install github.com/google/keep-sorted@latest
 
       - name: Run keep-sorted
         run: |
