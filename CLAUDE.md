@@ -67,6 +67,83 @@ The game maintains state through global variables:
 
 - Run keep-sorted on words.js with command `~/go/bin/keep-sorted --mode fix words.js`
 
+## Testing
+
+This project has comprehensive test coverage using modern testing tools.
+
+### Test Stack
+- **Vitest**: Fast unit tests for core game logic
+- **Playwright**: Cross-browser E2E tests for user flows
+- **Testing Library**: DOM testing utilities
+- **happy-dom**: Fast DOM implementation for Node.js
+
+### Running Tests
+
+#### First Time Setup
+```bash
+npm install
+```
+
+#### Unit Tests (Fast - runs in seconds)
+
+```bash
+# Watch mode (recommended for development - auto-reruns on file changes)
+npm test
+
+# Run once and exit
+npm test -- --run
+
+# Run with coverage report
+npm run test:coverage
+
+# Run with UI (visual test runner)
+npm run test:ui
+```
+
+#### E2E Tests (Slower - tests in real browsers)
+
+```bash
+# Run all E2E tests across all browsers (Chromium, Firefox, Safari)
+npm run test:e2e
+
+# Run with Playwright UI (interactive mode - highly recommended!)
+npm run test:e2e:ui
+
+# Run in debug mode (step through tests)
+npm run test:e2e:debug
+```
+
+#### Run All Tests Before Committing
+```bash
+npm test -- --run && npm run test:e2e
+```
+
+### Test Coverage
+
+**Unit Tests** (17 tests) - `tests/unit/`:
+- `normalize.test.js`: Accent removal, uppercase conversion, special characters
+- `wordValidation.test.js`: 5-letter word validation
+- `wordSelection.test.js`: Word-of-day algorithm, random/tutorial word selection
+
+**E2E Tests** (36 tests across 3 browsers) - `tests/e2e/`:
+- `gameplay.spec.js`: Typing, backspace, submission, color feedback, keyboard updates
+- `modes.spec.js`: Mode switching, show/hide answer, new game functionality
+
+### Test Results
+```
+✓ 17 unit tests passing
+✓ 36 E2E tests passing (Chromium, Firefox, Safari)
+✓ 100% success rate
+```
+
+### Module System
+
+The codebase uses ES6 modules to enable testing:
+- `package.json` has `"type": "module"`
+- Functions are exported from `script.js` and `words.js`
+- HTML loads scripts with `type="module"`
+- Tests import functions directly for isolated testing
+
 ## Auto-formatting
 
 A pre-commit hook is configured in `.git/hooks/pre-commit` that automatically formats files before each commit:
