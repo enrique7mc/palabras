@@ -131,6 +131,11 @@ function startPracticeGame() {
   console.log("Palabra práctica:", targetWord); // For debugging
   resetGame();
   updateUI();
+  // Reset show answer button
+  const showAnswerBtn = document.getElementById("show-answer-btn");
+  if (showAnswerBtn) {
+    showAnswerBtn.textContent = "💡 Ver Respuesta";
+  }
 }
 
 // Start tutorial
@@ -142,6 +147,11 @@ function startTutorial() {
   resetGame();
   updateUI();
   showTutorialHint();
+  // Reset show answer button
+  const showAnswerBtn = document.getElementById("show-answer-btn");
+  if (showAnswerBtn) {
+    showAnswerBtn.textContent = "💡 Ver Respuesta";
+  }
 }
 
 // Reset game board
@@ -173,6 +183,7 @@ function updateUI() {
   const dailyBtn = document.getElementById("daily-mode-btn");
   const practiceBtn = document.getElementById("practice-mode-btn");
   const newGameBtn = document.getElementById("new-game-btn");
+  const showAnswerBtn = document.getElementById("show-answer-btn");
   const nextWordTimer = document.getElementById("next-word-timer");
 
   if (gameMode === "daily") {
@@ -180,6 +191,7 @@ function updateUI() {
     dailyBtn.classList.add("active");
     practiceBtn.classList.remove("active");
     newGameBtn.classList.add("hidden");
+    showAnswerBtn.classList.add("hidden");
     if (nextWordTimer) nextWordTimer.style.display = "block";
   } else {
     subtitle.textContent =
@@ -187,6 +199,7 @@ function updateUI() {
     dailyBtn.classList.remove("active");
     practiceBtn.classList.add("active");
     newGameBtn.classList.remove("hidden");
+    showAnswerBtn.classList.remove("hidden");
     if (nextWordTimer) nextWordTimer.style.display = "none";
   }
 }
@@ -245,6 +258,7 @@ function setupEventListeners() {
   const statsBtn = document.getElementById("stats-btn");
   const helpBtn = document.getElementById("help-btn");
   const newGameBtn = document.getElementById("new-game-btn");
+  const showAnswerBtn = document.getElementById("show-answer-btn");
   const dailyModeBtn = document.getElementById("daily-mode-btn");
   const practiceModeBtn = document.getElementById("practice-mode-btn");
   const statsModal = document.getElementById("stats-modal");
@@ -267,11 +281,20 @@ function setupEventListeners() {
     startPracticeGame();
   });
 
+  showAnswerBtn.addEventListener("click", () => {
+    toggleAnswer();
+  });
+
   dailyModeBtn.addEventListener("click", () => {
     gameMode = "daily";
     targetWord = getWordOfDay();
     resetGame();
     updateUI();
+    // Reset show answer button
+    const showAnswerBtn = document.getElementById("show-answer-btn");
+    if (showAnswerBtn) {
+      showAnswerBtn.textContent = "💡 Ver Respuesta";
+    }
   });
 
   practiceModeBtn.addEventListener("click", () => {
@@ -518,6 +541,26 @@ function showMessage(text, type = "show") {
     message.className = "message";
     message.textContent = "";
   }, 2000);
+}
+
+// Toggle answer display (only in practice/tutorial mode)
+function toggleAnswer() {
+  if (gameMode === "daily") return; // Don't show answer in daily mode
+
+  const btn = document.getElementById("show-answer-btn");
+  const message = document.getElementById("message");
+
+  if (btn.textContent === "💡 Ver Respuesta") {
+    // Show answer - directly set message without timeout
+    message.textContent = `La respuesta es: ${targetWord}`;
+    message.className = "message show";
+    btn.textContent = "🔒 Ocultar Respuesta";
+  } else {
+    // Hide answer
+    message.className = "message";
+    message.textContent = "";
+    btn.textContent = "💡 Ver Respuesta";
+  }
 }
 
 // Statistics functions
