@@ -348,6 +348,7 @@ export const WORDS = [
   "MORIR",
   "MOVER",
   "MUCHO",
+  "MUELA",
   "MUJER",
   "MUNDO",
   "MUSEO",
@@ -723,5 +724,6 @@ export const VALID_WORDS = [
   "BUZÓN",
   "CEÑIR",
   "SEDAR",
+  "VELOZ",
   // keep-sorted end
 ];
