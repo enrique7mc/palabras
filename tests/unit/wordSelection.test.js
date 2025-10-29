@@ -25,22 +25,26 @@ describe("getWordOfDay", () => {
   });
 
   it("returns different words for different days", () => {
-    const word1 = getWordOfDay();
-
-    // Mock tomorrow's date
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    tomorrow.setHours(0, 0, 0, 0);
-
     vi.useFakeTimers();
-    vi.setSystemTime(tomorrow);
 
-    const word2 = getWordOfDay();
+    // Simulate 30 consecutive days and collect words
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const words = new Set();
 
-    // They might be the same occasionally due to word list cycling
-    // but at least verify both are valid
-    expect(isValidWordLength(word1)).toBe(true);
-    expect(isValidWordLength(word2)).toBe(true);
+    for (let i = 0; i < 30; i++) {
+      const testDate = new Date(today);
+      testDate.setDate(today.getDate() + i);
+      vi.setSystemTime(testDate);
+
+      const word = getWordOfDay();
+      expect(isValidWordLength(word)).toBe(true); // Verify each word is valid
+      words.add(word);
+    }
+
+    // Over 30 days, we should have multiple different words
+    // (not necessarily all different, but more than just 1)
+    expect(words.size).toBeGreaterThan(1);
   });
 
   it("has fallback if no valid word found", () => {
