@@ -103,6 +103,12 @@ npm run test:e2e:debug     # Debug mode
 - Random word selection
 - Tutorial word selection
 
+**DOM Tests** (32 tests):
+- Board creation (6 rows × 5 tiles with correct IDs)
+- Keyboard rendering (Spanish layout with Ñ)
+- Modal show/hide behavior
+- Message display and timeouts
+
 **E2E Tests** (36 tests across 3 browsers):
 - Typing letters with on-screen keyboard
 - Deleting letters with backspace
@@ -121,6 +127,11 @@ tests/
 │   ├── normalize.test.js
 │   ├── wordValidation.test.js
 │   └── wordSelection.test.js
+├── dom/            # DOM manipulation tests
+│   ├── gameBoard.test.js
+│   ├── keyboard.test.js
+│   ├── modals.test.js
+│   └── message.test.js
 └── e2e/            # Browser-based tests
     ├── gameplay.spec.js
     └── modes.spec.js

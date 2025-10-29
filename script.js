@@ -11,7 +11,7 @@ let tutorialStep = 0;
 let tutorialHints = [];
 
 // Keyboard layout for Spanish
-const keys = [
+export const keys = [
   ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
   ["A", "S", "D", "F", "G", "H", "J", "K", "L", "Ñ"],
   ["ENTER", "Z", "X", "C", "V", "B", "N", "M", "⌫"],
@@ -213,7 +213,7 @@ function updateUI() {
 }
 
 // Create game board
-function createBoard() {
+export function createBoard() {
   const board = document.getElementById("game-board");
   for (let i = 0; i < 6; i++) {
     const row = document.createElement("div");
@@ -229,7 +229,7 @@ function createBoard() {
 }
 
 // Create keyboard
-function createKeyboard() {
+export function createKeyboard() {
   const keyboard = document.getElementById("keyboard");
   keys.forEach((row) => {
     const keyboardRow = document.createElement("div");
@@ -557,7 +557,7 @@ function shakeRow() {
 }
 
 // Show message
-function showMessage(text, type = "show") {
+export function showMessage(text, type = "show") {
   const message = document.getElementById("message");
   message.textContent = text;
   message.className = `message ${type}`;

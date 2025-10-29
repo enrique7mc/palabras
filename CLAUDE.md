@@ -125,6 +125,12 @@ npm test -- --run && npm run test:e2e
 - `wordValidation.test.js`: 5-letter word validation
 - `wordSelection.test.js`: Word-of-day algorithm, random/tutorial word selection
 
+**DOM Tests** (32 tests) - `tests/dom/`:
+- `gameBoard.test.js`: Board creation (6 rows × 5 tiles), tile IDs, empty state
+- `keyboard.test.js`: Keyboard rendering, Spanish layout with Ñ, key classes
+- `modals.test.js`: Modal show/hide behavior, close buttons, content structure
+- `message.test.js`: Message display, type classes (success/error/show), timeouts
+
 **E2E Tests** (36 tests across 3 browsers) - `tests/e2e/`:
 - `gameplay.spec.js`: Typing, backspace, submission, color feedback, keyboard updates
 - `modes.spec.js`: Mode switching, show/hide answer, new game functionality
@@ -132,8 +138,9 @@ npm test -- --run && npm run test:e2e
 ### Test Results
 ```
 ✓ 17 unit tests passing
+✓ 32 DOM tests passing
 ✓ 36 E2E tests passing (Chromium, Firefox, Safari)
-✓ 100% success rate
+✓ 85 total tests - 100% success rate
 ```
 
 ### Module System
