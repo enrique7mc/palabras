@@ -1,3 +1,5 @@
+import { WORDS, VALID_WORDS } from "./words.js";
+
 // Game state
 let currentRow = 0;
 let currentTile = 0;
@@ -9,14 +11,14 @@ let tutorialStep = 0;
 let tutorialHints = [];
 
 // Keyboard layout for Spanish
-const keys = [
+export const keys = [
   ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
   ["A", "S", "D", "F", "G", "H", "J", "K", "L", "Ñ"],
   ["ENTER", "Z", "X", "C", "V", "B", "N", "M", "⌫"],
 ];
 
 // Function to normalize strings (remove accents)
-function normalize(str) {
+export function normalize(str) {
   return str
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
@@ -24,12 +26,12 @@ function normalize(str) {
 }
 
 // Function to validate word is exactly 5 letters
-function isValidWordLength(word) {
+export function isValidWordLength(word) {
   return word.length === 5;
 }
 
 // Get word of the day
-function getWordOfDay() {
+export function getWordOfDay() {
   const startDate = new Date(2025, 0, 1); // Jan 1, 2025
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -57,7 +59,7 @@ function getWordOfDay() {
 }
 
 // Get random word for practice mode
-function getRandomWord() {
+export function getRandomWord() {
   // Keep trying until we find a 5-letter word
   let attempts = 0;
   const maxAttempts = 100;
@@ -78,19 +80,20 @@ function getRandomWord() {
   return word;
 }
 
-// Get tutorial word (easier, common word)
-function getTutorialWord() {
-  const tutorialWords = [
-    "PADRE",
-    "COMER",
-    "PERRO",
-    "LIBRO",
-    "GALLO",
-    "ACERO",
-    "SILLA",
-    "PLANTA",
-  ];
+// Tutorial word list (easier, common words)
+export const tutorialWords = [
+  "PADRE",
+  "COMER",
+  "PERRO",
+  "LIBRO",
+  "GALLO",
+  "ACERO",
+  "SILLA",
+  "PLANTA",
+];
 
+// Get tutorial word (easier, common word)
+export function getTutorialWord() {
   // Filter to only 5-letter words
   const validWords = tutorialWords.filter((w) => isValidWordLength(w));
 
@@ -211,7 +214,7 @@ function updateUI() {
 }
 
 // Create game board
-function createBoard() {
+export function createBoard() {
   const board = document.getElementById("game-board");
   for (let i = 0; i < 6; i++) {
     const row = document.createElement("div");
@@ -227,7 +230,7 @@ function createBoard() {
 }
 
 // Create keyboard
-function createKeyboard() {
+export function createKeyboard() {
   const keyboard = document.getElementById("keyboard");
   keys.forEach((row) => {
     const keyboardRow = document.createElement("div");
@@ -555,7 +558,7 @@ function shakeRow() {
 }
 
 // Show message
-function showMessage(text, type = "show") {
+export function showMessage(text, type = "show") {
   const message = document.getElementById("message");
   message.textContent = text;
   message.className = `message ${type}`;
