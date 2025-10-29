@@ -1,0 +1,1 @@
+- Run keep-sorted on words.js with command `~/go/bin/keep-sorted --mode fix words.js`
