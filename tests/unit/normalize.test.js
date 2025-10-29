@@ -21,7 +21,7 @@ describe("normalize", () => {
     expect(normalize("árBOL")).toBe("ARBOL");
   });
 
-  it("preserves Ñ character", () => {
+  it("removes tilde from Ñ/ñ", () => {
     expect(normalize("NIÑO")).toBe("NINO");
     expect(normalize("año")).toBe("ANO");
   });
