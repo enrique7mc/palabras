@@ -231,7 +231,23 @@ function createKeyboard() {
       button.className = key.length > 1 ? "key wide" : "key";
       button.textContent = key;
       button.setAttribute("data-key", key);
-      button.addEventListener("click", () => handleKey(key));
+
+      // Handle both click and touch events for better mobile support
+      let touchHandled = false;
+
+      button.addEventListener("touchstart", (e) => {
+        e.preventDefault(); // Prevent ghost clicks
+        touchHandled = true;
+        handleKey(key);
+      });
+
+      button.addEventListener("click", (e) => {
+        if (!touchHandled) {
+          handleKey(key);
+        }
+        touchHandled = false;
+      });
+
       keyboardRow.appendChild(button);
     });
     keyboard.appendChild(keyboardRow);
