@@ -1,134 +1,156 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Palabras - Wordle en Español</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
     <div class="container">
-        <header>
-            <h1>PALABRAS</h1>
-            <p class="subtitle" id="subtitle">Adivina la palabra del día</p>
+      <header>
+        <h1>PALABRAS</h1>
+        <p class="subtitle" id="subtitle">Adivina la palabra del día</p>
 
-            <div class="mode-toggle">
-                <button id="daily-mode-btn" class="mode-btn active">🗓️ Diario</button>
-                <button id="practice-mode-btn" class="mode-btn">🎮 Práctica</button>
+        <div class="mode-toggle">
+          <button id="daily-mode-btn" class="mode-btn active">🗓️ Diario</button>
+          <button id="practice-mode-btn" class="mode-btn">🎮 Práctica</button>
+        </div>
+      </header>
+
+      <div id="game-board">
+        <!-- Game grid will be generated here -->
+      </div>
+
+      <div id="message" class="message"></div>
+
+      <div id="keyboard">
+        <!-- Keyboard will be generated here -->
+      </div>
+
+      <div id="stats-modal" class="modal hidden">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <h2>Estadísticas</h2>
+          <div id="stats-content">
+            <div class="stat">
+              <div class="stat-number" id="games-played">0</div>
+              <div class="stat-label">Jugadas</div>
             </div>
-        </header>
-
-        <div id="game-board">
-            <!-- Game grid will be generated here -->
-        </div>
-
-        <div id="message" class="message"></div>
-
-        <div id="keyboard">
-            <!-- Keyboard will be generated here -->
-        </div>
-
-        <div id="stats-modal" class="modal hidden">
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                <h2>Estadísticas</h2>
-                <div id="stats-content">
-                    <div class="stat">
-                        <div class="stat-number" id="games-played">0</div>
-                        <div class="stat-label">Jugadas</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-number" id="win-rate">0</div>
-                        <div class="stat-label">% Victorias</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-number" id="current-streak">0</div>
-                        <div class="stat-label">Racha Actual</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-number" id="max-streak">0</div>
-                        <div class="stat-label">Racha Máxima</div>
-                    </div>
-                </div>
-                <div id="next-word-timer"></div>
+            <div class="stat">
+              <div class="stat-number" id="win-rate">0</div>
+              <div class="stat-label">% Victorias</div>
             </div>
-        </div>
-
-        <div class="buttons">
-            <button id="new-game-btn" class="hidden">🔄 Nueva Práctica</button>
-            <button id="show-answer-btn" class="hidden">💡 Ver Respuesta</button>
-            <button id="stats-btn">📊 Estadísticas</button>
-            <button id="help-btn">❓ Ayuda</button>
-        </div>
-
-        <div id="help-modal" class="modal hidden">
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                <h2>Cómo jugar</h2>
-                <p>Adivina la palabra en 6 intentos.</p>
-                <p>Cada intento debe ser una palabra válida de 5 letras.</p>
-                <p>Después de cada intento, el color de las letras cambia para mostrar qué tan cerca estás de la solución.</p>
-
-                <div class="examples">
-                    <h3>Ejemplos</h3>
-                    <div class="example-word">
-                        <div class="tile correct">G</div>
-                        <div class="tile">A</div>
-                        <div class="tile">T</div>
-                        <div class="tile">O</div>
-                        <div class="tile">S</div>
-                    </div>
-                    <p>La letra <strong>G</strong> está en la palabra y en la posición correcta.</p>
-
-                    <div class="example-word">
-                        <div class="tile">C</div>
-                        <div class="tile">A</div>
-                        <div class="tile present">S</div>
-                        <div class="tile">A</div>
-                        <div class="tile">S</div>
-                    </div>
-                    <p>La letra <strong>S</strong> está en la palabra pero en posición incorrecta.</p>
-
-                    <div class="example-word">
-                        <div class="tile">P</div>
-                        <div class="tile">E</div>
-                        <div class="tile">R</div>
-                        <div class="tile absent">R</div>
-                        <div class="tile">O</div>
-                    </div>
-                    <p>La letra <strong>R</strong> (segunda) no está en la palabra.</p>
-                </div>
-
-                <p><strong>Nota:</strong> Las tildes (á, é, í, ó, ú) se ignoran. Escribe solo la letra base.</p>
-                <p><strong>¡Una nueva palabra cada día!</strong></p>
+            <div class="stat">
+              <div class="stat-number" id="current-streak">0</div>
+              <div class="stat-label">Racha Actual</div>
             </div>
-        </div>
-
-        <div id="tutorial-modal" class="modal hidden">
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                <h2>¡Bienvenido a Palabras!</h2>
-                <p>Parece que es tu primera vez aquí. ¿Te gustaría jugar un tutorial guiado?</p>
-
-                <div class="tutorial-options">
-                    <button id="start-tutorial-btn" class="tutorial-btn primary">✨ Jugar Tutorial</button>
-                    <button id="skip-tutorial-btn" class="tutorial-btn">Saltar al Juego</button>
-                </div>
-
-                <div class="tutorial-info">
-                    <p><strong>En el tutorial aprenderás:</strong></p>
-                    <ul>
-                        <li>Cómo escribir y enviar palabras</li>
-                        <li>Qué significan los colores</li>
-                        <li>Estrategias básicas para ganar</li>
-                    </ul>
-                    <p>Puedes acceder al tutorial en cualquier momento desde el modo práctica.</p>
-                </div>
+            <div class="stat">
+              <div class="stat-number" id="max-streak">0</div>
+              <div class="stat-label">Racha Máxima</div>
             </div>
+          </div>
+          <div id="next-word-timer"></div>
         </div>
+      </div>
+
+      <div class="buttons">
+        <button id="new-game-btn" class="hidden">🔄 Nueva Práctica</button>
+        <button id="show-answer-btn" class="hidden">💡 Ver Respuesta</button>
+        <button id="stats-btn">📊 Estadísticas</button>
+        <button id="help-btn">❓ Ayuda</button>
+      </div>
+
+      <div id="help-modal" class="modal hidden">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <h2>Cómo jugar</h2>
+          <p>Adivina la palabra en 6 intentos.</p>
+          <p>Cada intento debe ser una palabra válida de 5 letras.</p>
+          <p>
+            Después de cada intento, el color de las letras cambia para mostrar
+            qué tan cerca estás de la solución.
+          </p>
+
+          <div class="examples">
+            <h3>Ejemplos</h3>
+            <div class="example-word">
+              <div class="tile correct">G</div>
+              <div class="tile">A</div>
+              <div class="tile">T</div>
+              <div class="tile">O</div>
+              <div class="tile">S</div>
+            </div>
+            <p>
+              La letra <strong>G</strong> está en la palabra y en la posición
+              correcta.
+            </p>
+
+            <div class="example-word">
+              <div class="tile">C</div>
+              <div class="tile">A</div>
+              <div class="tile present">S</div>
+              <div class="tile">A</div>
+              <div class="tile">S</div>
+            </div>
+            <p>
+              La letra <strong>S</strong> está en la palabra pero en posición
+              incorrecta.
+            </p>
+
+            <div class="example-word">
+              <div class="tile">P</div>
+              <div class="tile">E</div>
+              <div class="tile">R</div>
+              <div class="tile absent">R</div>
+              <div class="tile">O</div>
+            </div>
+            <p>La letra <strong>R</strong> (segunda) no está en la palabra.</p>
+          </div>
+
+          <p>
+            <strong>Nota:</strong> Las tildes (á, é, í, ó, ú) se ignoran.
+            Escribe solo la letra base.
+          </p>
+          <p><strong>¡Una nueva palabra cada día!</strong></p>
+        </div>
+      </div>
+
+      <div id="tutorial-modal" class="modal hidden">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <h2>¡Bienvenido a Palabras!</h2>
+          <p>
+            Parece que es tu primera vez aquí. ¿Te gustaría jugar un tutorial
+            guiado?
+          </p>
+
+          <div class="tutorial-options">
+            <button id="start-tutorial-btn" class="tutorial-btn primary">
+              ✨ Jugar Tutorial
+            </button>
+            <button id="skip-tutorial-btn" class="tutorial-btn">
+              Saltar al Juego
+            </button>
+          </div>
+
+          <div class="tutorial-info">
+            <p><strong>En el tutorial aprenderás:</strong></p>
+            <ul>
+              <li>Cómo escribir y enviar palabras</li>
+              <li>Qué significan los colores</li>
+              <li>Estrategias básicas para ganar</li>
+            </ul>
+            <p>
+              Puedes acceder al tutorial en cualquier momento desde el modo
+              práctica.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
 
     <script src="words.js"></script>
     <script src="script.js"></script>
-</body>
+  </body>
 </html>

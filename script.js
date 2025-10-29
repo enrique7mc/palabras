@@ -394,10 +394,10 @@ function submitGuess() {
   }
 
   const normalizedWords = WORDS.map((w) => normalize(w)).filter((w) =>
-    isValidWordLength(w)
+    isValidWordLength(w),
   );
   const normalizedValidWords = VALID_WORDS.map((w) => normalize(w)).filter(
-    (w) => isValidWordLength(w)
+    (w) => isValidWordLength(w),
   );
 
   if (
@@ -622,9 +622,8 @@ function showStats() {
   const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
   const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-  document.getElementById(
-    "next-word-timer"
-  ).textContent = `Próxima palabra en ${hours}h ${minutes}m ${seconds}s`;
+  document.getElementById("next-word-timer").textContent =
+    `Próxima palabra en ${hours}h ${minutes}m ${seconds}s`;
 }
 
 // Tutorial hints system
