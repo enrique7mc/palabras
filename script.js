@@ -289,8 +289,10 @@ function setupEventListeners() {
     const key = e.key.toUpperCase();
 
     if (key === "ENTER") {
+      e.preventDefault(); // Prevent default browser behavior
       handleKey("ENTER");
     } else if (key === "BACKSPACE") {
+      e.preventDefault(); // Prevent default browser behavior
       handleKey("⌫");
     } else if (/^[A-ZÑ]$/.test(key)) {
       handleKey(key);
