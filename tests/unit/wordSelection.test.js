@@ -4,6 +4,7 @@ import {
   getRandomWord,
   getTutorialWord,
   isValidWordLength,
+  tutorialWords,
 } from "../../script.js";
 
 describe("getWordOfDay", () => {
@@ -80,17 +81,8 @@ describe("getTutorialWord", () => {
   });
 
   it("returns a word from the tutorial list", () => {
-    const validTutorialWords = [
-      "PADRE",
-      "COMER",
-      "PERRO",
-      "LIBRO",
-      "GALLO",
-      "ACERO",
-      "SILLA",
-    ];
     const word = getTutorialWord();
-    expect(validTutorialWords).toContain(word);
+    expect(tutorialWords).toContain(word);
   });
 
   it("has fallback if no valid tutorial word", () => {

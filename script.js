@@ -80,19 +80,20 @@ export function getRandomWord() {
   return word;
 }
 
+// Tutorial word list (easier, common words)
+export const tutorialWords = [
+  "PADRE",
+  "COMER",
+  "PERRO",
+  "LIBRO",
+  "GALLO",
+  "ACERO",
+  "SILLA",
+  "PLANTA",
+];
+
 // Get tutorial word (easier, common word)
 export function getTutorialWord() {
-  const tutorialWords = [
-    "PADRE",
-    "COMER",
-    "PERRO",
-    "LIBRO",
-    "GALLO",
-    "ACERO",
-    "SILLA",
-    "PLANTA",
-  ];
-
   // Filter to only 5-letter words
   const validWords = tutorialWords.filter((w) => isValidWordLength(w));
 
