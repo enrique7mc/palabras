@@ -284,15 +284,18 @@ export function createKeyboard() {
 // Setup event listeners
 function setupEventListeners() {
   document.addEventListener("keydown", (e) => {
-    if (gameOver) return;
-
     const key = e.key.toUpperCase();
 
+    // Prevent default browser behavior for game keys BEFORE any other checks
+    if (key === "ENTER" || key === "BACKSPACE" || /^[A-ZÑ]$/.test(key)) {
+      e.preventDefault();
+    }
+
+    if (gameOver) return;
+
     if (key === "ENTER") {
-      e.preventDefault(); // Prevent default browser behavior
       handleKey("ENTER");
     } else if (key === "BACKSPACE") {
-      e.preventDefault(); // Prevent default browser behavior
       handleKey("⌫");
     } else if (/^[A-ZÑ]$/.test(key)) {
       handleKey(key);
