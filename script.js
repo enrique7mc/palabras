@@ -192,6 +192,12 @@ function updateUI() {
     practiceBtn.classList.remove("active");
     newGameBtn.classList.add("hidden");
     showAnswerBtn.classList.add("hidden");
+    // Also hide the answer if it was showing
+    const message = document.getElementById("message");
+    if (message && message.textContent.includes("La respuesta es:")) {
+      message.className = "message";
+      message.textContent = "";
+    }
     if (nextWordTimer) nextWordTimer.style.display = "block";
   } else {
     subtitle.textContent =

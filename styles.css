@@ -287,7 +287,16 @@ h1 {
   background-color: #6aaa64;
 }
 
-#new-game-btn.hidden {
+#show-answer-btn {
+  background-color: #b59f3b;
+}
+
+#show-answer-btn:hover {
+  background-color: #c9b458;
+}
+
+#new-game-btn.hidden,
+#show-answer-btn.hidden {
   display: none;
 }
 
