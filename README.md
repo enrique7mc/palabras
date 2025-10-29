@@ -65,74 +65,74 @@ npm test          # Ejecuta tests unitarios
 npm run test:e2e  # Ejecuta tests E2E
 ```
 
-## Testing
+## Pruebas
 
-This project includes comprehensive test coverage using modern testing tools:
+Este proyecto incluye cobertura completa de pruebas usando herramientas modernas de testing:
 
-### Test Stack
-- **Vitest**: Fast unit tests for core game logic
-- **Playwright**: Cross-browser E2E tests for user flows
-- **Testing Library**: DOM testing utilities
+### Herramientas de Testing
+- **Vitest**: Pruebas unitarias rápidas para la lógica del juego
+- **Playwright**: Pruebas E2E multiplataforma para flujos de usuario
+- **Testing Library**: Utilidades para pruebas del DOM
 
-### Running Tests
+### Ejecutar Pruebas
 
-#### Unit Tests
-Run unit tests for core functions (normalize, word selection, validation):
-
-```bash
-npm test              # Watch mode
-npm test -- --run     # Run once
-npm run test:coverage # With coverage report
-```
-
-#### E2E Tests
-Run end-to-end tests across Chromium, Firefox, and Safari:
+#### Pruebas Unitarias
+Ejecuta pruebas unitarias para funciones principales (normalización, selección de palabras, validación):
 
 ```bash
-npm run test:e2e           # Run all E2E tests
-npm run test:e2e:ui        # Run with Playwright UI
-npm run test:e2e:debug     # Debug mode
+npm test              # Modo observación
+npm test -- --run     # Ejecutar una vez
+npm run test:coverage # Con reporte de cobertura
 ```
 
-### Test Coverage
+#### Pruebas E2E
+Ejecuta pruebas de extremo a extremo en Chromium, Firefox y Safari:
 
-**Unit Tests** (17 tests):
-- String normalization (accent removal, uppercase conversion)
-- Word length validation
-- Word-of-day algorithm
-- Random word selection
-- Tutorial word selection
+```bash
+npm run test:e2e           # Ejecutar todas las pruebas E2E
+npm run test:e2e:ui        # Ejecutar con interfaz de Playwright
+npm run test:e2e:debug     # Modo depuración
+```
 
-**DOM Tests** (32 tests):
-- Board creation (6 rows × 5 tiles with correct IDs)
-- Keyboard rendering (Spanish layout with Ñ)
-- Modal show/hide behavior
-- Message display and timeouts
+### Cobertura de Pruebas
 
-**E2E Tests** (36 tests across 3 browsers):
-- Typing letters with on-screen keyboard
-- Deleting letters with backspace
-- Submitting words and validation
-- Color feedback system
-- Keyboard state updates
-- Mode switching (Daily/Practice)
-- Show/hide answer functionality
-- New game functionality
+**Pruebas Unitarias** (17 pruebas):
+- Normalización de cadenas (eliminación de acentos, conversión a mayúsculas)
+- Validación de longitud de palabras
+- Algoritmo de palabra del día
+- Selección aleatoria de palabras
+- Selección de palabras para tutorial
 
-### Test Structure
+**Pruebas del DOM** (32 pruebas):
+- Creación del tablero (6 filas × 5 casillas con IDs correctos)
+- Renderizado del teclado (disposición española con Ñ)
+- Comportamiento mostrar/ocultar de modales
+- Visualización de mensajes y temporizadores
+
+**Pruebas E2E** (36 pruebas en 3 navegadores):
+- Escritura de letras con teclado en pantalla
+- Eliminación de letras con retroceso
+- Envío de palabras y validación
+- Sistema de retroalimentación de colores
+- Actualizaciones del estado del teclado
+- Cambio de modo (Diario/Práctica)
+- Funcionalidad mostrar/ocultar respuesta
+- Funcionalidad de juego nuevo
+
+### Estructura de Pruebas
 
 ```
 tests/
-├── unit/           # Pure function tests
+├── unit/           # Pruebas de funciones puras
 │   ├── normalize.test.js
 │   ├── wordValidation.test.js
 │   └── wordSelection.test.js
-├── dom/            # DOM manipulation tests
+├── dom/            # Pruebas de manipulación del DOM
 │   ├── gameBoard.test.js
 │   ├── keyboard.test.js
 │   ├── modals.test.js
 │   └── message.test.js
-└── e2e/            # Browser-based tests
+└── e2e/            # Pruebas en navegador
     ├── gameplay.spec.js
     └── modes.spec.js
 ```
