@@ -45,12 +45,85 @@ Un clon de Wordle en español, con vocabulario de Latinoamérica.
 
 ## Instalación
 
+### Para Jugar
 No requiere instalación. Simplemente clona el repositorio y abre `index.html` en tu navegador:
 
 ```bash
 git clone https://github.com/enrique7mc/palabras.git
 cd palabras
 open index.html
+```
+
+### Para Desarrollo
+Si quieres ejecutar tests o contribuir al proyecto:
+
+```bash
+git clone https://github.com/enrique7mc/palabras.git
+cd palabras
+npm install       # Instala dependencias de desarrollo
+npm test          # Ejecuta tests unitarios
+npm run test:e2e  # Ejecuta tests E2E
+```
+
+## Testing
+
+This project includes comprehensive test coverage using modern testing tools:
+
+### Test Stack
+- **Vitest**: Fast unit tests for core game logic
+- **Playwright**: Cross-browser E2E tests for user flows
+- **Testing Library**: DOM testing utilities
+
+### Running Tests
+
+#### Unit Tests
+Run unit tests for core functions (normalize, word selection, validation):
+
+```bash
+npm test              # Watch mode
+npm test -- --run     # Run once
+npm run test:coverage # With coverage report
+```
+
+#### E2E Tests
+Run end-to-end tests across Chromium, Firefox, and Safari:
+
+```bash
+npm run test:e2e           # Run all E2E tests
+npm run test:e2e:ui        # Run with Playwright UI
+npm run test:e2e:debug     # Debug mode
+```
+
+### Test Coverage
+
+**Unit Tests** (17 tests):
+- String normalization (accent removal, uppercase conversion)
+- Word length validation
+- Word-of-day algorithm
+- Random word selection
+- Tutorial word selection
+
+**E2E Tests** (36 tests across 3 browsers):
+- Typing letters with on-screen keyboard
+- Deleting letters with backspace
+- Submitting words and validation
+- Color feedback system
+- Keyboard state updates
+- Mode switching (Daily/Practice)
+- Show/hide answer functionality
+- New game functionality
+
+### Test Structure
+
+```
+tests/
+├── unit/           # Pure function tests
+│   ├── normalize.test.js
+│   ├── wordValidation.test.js
+│   └── wordSelection.test.js
+└── e2e/            # Browser-based tests
+    ├── gameplay.spec.js
+    └── modes.spec.js
 ```
 
 ## Mantenimiento de las listas de palabras

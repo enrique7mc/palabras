@@ -1,3 +1,5 @@
+import { WORDS, VALID_WORDS } from "./words.js";
+
 // Game state
 let currentRow = 0;
 let currentTile = 0;
@@ -16,7 +18,7 @@ const keys = [
 ];
 
 // Function to normalize strings (remove accents)
-function normalize(str) {
+export function normalize(str) {
   return str
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
@@ -24,12 +26,12 @@ function normalize(str) {
 }
 
 // Function to validate word is exactly 5 letters
-function isValidWordLength(word) {
+export function isValidWordLength(word) {
   return word.length === 5;
 }
 
 // Get word of the day
-function getWordOfDay() {
+export function getWordOfDay() {
   const startDate = new Date(2025, 0, 1); // Jan 1, 2025
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -57,7 +59,7 @@ function getWordOfDay() {
 }
 
 // Get random word for practice mode
-function getRandomWord() {
+export function getRandomWord() {
   // Keep trying until we find a 5-letter word
   let attempts = 0;
   const maxAttempts = 100;
@@ -79,7 +81,7 @@ function getRandomWord() {
 }
 
 // Get tutorial word (easier, common word)
-function getTutorialWord() {
+export function getTutorialWord() {
   const tutorialWords = [
     "PADRE",
     "COMER",

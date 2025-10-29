@@ -1,6 +1,6 @@
 // Target words - curated list of common 5-letter Spanish words
 // These are the words that can be the daily answer
-const WORDS = [
+export const WORDS = [
   // keep-sorted start
   // Additional common Latin American words
   "ABEJA",
@@ -532,7 +532,7 @@ const WORDS = [
 
 // Valid guesses - includes all target words plus additional common words
 // Players can guess these words, but they won't be the daily answer
-const VALID_WORDS = [
+export const VALID_WORDS = [
   ...WORDS,
   // keep-sorted start
   "ABACO",
