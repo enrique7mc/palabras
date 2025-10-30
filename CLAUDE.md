@@ -67,6 +67,27 @@ The game maintains state through global variables:
 
 - Run keep-sorted on words.js with command `~/go/bin/keep-sorted --mode fix words.js`
 
+## Development Server
+
+To run the game locally during development:
+
+```bash
+# Run with cache disabled (recommended for development)
+npx http-server -p 8080 -c-1
+```
+
+The `-c-1` flag disables caching, ensuring you always see the latest changes without needing hard refreshes.
+
+**Alternative: Avoid caching issues in browser**
+- Open DevTools (F12 / Cmd+Option+I)
+- Go to Network tab
+- Check "Disable cache"
+- Keep DevTools open while developing
+
+**Hard refresh (if needed):**
+- Mac: Cmd+Shift+R
+- Windows/Linux: Ctrl+Shift+R or Ctrl+F5
+
 ## Testing
 
 This project has comprehensive test coverage using modern testing tools.

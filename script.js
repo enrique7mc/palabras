@@ -157,10 +157,6 @@ function startPracticeGame() {
   if (showAnswerBtn) {
     showAnswerBtn.textContent = "💡 Ver Respuesta";
   }
-  // Remove focus from any button to prevent Enter key from activating it
-  if (document.activeElement && document.activeElement.blur) {
-    document.activeElement.blur();
-  }
 }
 
 // Start tutorial
@@ -176,10 +172,6 @@ function startTutorial() {
   const showAnswerBtn = document.getElementById("show-answer-btn");
   if (showAnswerBtn) {
     showAnswerBtn.textContent = "💡 Ver Respuesta";
-  }
-  // Remove focus from any button to prevent Enter key from activating it
-  if (document.activeElement && document.activeElement.blur) {
-    document.activeElement.blur();
   }
 }
 
@@ -355,10 +347,6 @@ function setupEventListeners() {
     const showAnswerBtn = document.getElementById("show-answer-btn");
     if (showAnswerBtn) {
       showAnswerBtn.textContent = "💡 Ver Respuesta";
-    }
-    // Remove focus from any button to prevent Enter key from activating it
-    if (document.activeElement && document.activeElement.blur) {
-      document.activeElement.blur();
     }
   });
 
