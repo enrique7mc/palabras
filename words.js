@@ -723,6 +723,7 @@ export const VALID_WORDS = [
   "BUSTO",
   "BUZÓN",
   "CEÑIR",
+  "PAUTA",
   "SEDAR",
   "VELOZ",
   // keep-sorted end
