@@ -294,6 +294,11 @@ function setupEventListeners() {
   document.addEventListener("keydown", (e) => {
     const key = e.key.toUpperCase();
 
+    // Don't interfere with browser shortcuts (Cmd/Ctrl/Alt + key)
+    if (e.metaKey || e.ctrlKey || e.altKey) {
+      return;
+    }
+
     // Prevent default browser behavior for game keys BEFORE any other checks
     if (key === "ENTER" || key === "BACKSPACE" || /^[A-ZÑ]$/.test(key)) {
       e.preventDefault();
