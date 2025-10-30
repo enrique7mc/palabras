@@ -1,5 +1,26 @@
 import { WORDS, VALID_WORDS } from "./words.js";
 
+// Function to normalize strings (remove accents) - moved up for pre-computation
+function normalizeWord(str) {
+  return str
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toUpperCase();
+}
+
+// Function to validate word length
+function validateWordLength(word) {
+  return word.length === 5;
+}
+
+// Pre-compute normalized word lists (do this once at module load)
+const NORMALIZED_WORDS = WORDS.map((w) => normalizeWord(w)).filter((w) =>
+  validateWordLength(w),
+);
+const NORMALIZED_VALID_WORDS = VALID_WORDS.map((w) => normalizeWord(w)).filter(
+  (w) => validateWordLength(w),
+);
+
 // Game state
 let currentRow = 0;
 let currentTile = 0;
@@ -17,17 +38,14 @@ export const keys = [
   ["ENTER", "Z", "X", "C", "V", "B", "N", "M", "⌫"],
 ];
 
-// Function to normalize strings (remove accents)
+// Exported function to normalize strings (calls internal version)
 export function normalize(str) {
-  return str
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toUpperCase();
+  return normalizeWord(str);
 }
 
-// Function to validate word is exactly 5 letters
+// Exported function to validate word is exactly 5 letters (calls internal version)
 export function isValidWordLength(word) {
-  return word.length === 5;
+  return validateWordLength(word);
 }
 
 // Get word of the day
@@ -89,7 +107,7 @@ export const tutorialWords = [
   "GALLO",
   "ACERO",
   "SILLA",
-  "PLANTA",
+  "MUELA",
 ];
 
 // Get tutorial word (easier, common word)
@@ -266,9 +284,19 @@ export function createKeyboard() {
 // Setup event listeners
 function setupEventListeners() {
   document.addEventListener("keydown", (e) => {
-    if (gameOver) return;
-
     const key = e.key.toUpperCase();
+
+    // Don't interfere with browser shortcuts (Cmd/Ctrl/Alt + key)
+    if (e.metaKey || e.ctrlKey || e.altKey) {
+      return;
+    }
+
+    // Prevent default browser behavior for game keys BEFORE any other checks
+    if (key === "ENTER" || key === "BACKSPACE" || /^[A-ZÑ]$/.test(key)) {
+      e.preventDefault();
+    }
+
+    if (gameOver) return;
 
     if (key === "ENTER") {
       handleKey("ENTER");
@@ -418,16 +446,10 @@ function submitGuess() {
     return;
   }
 
-  const normalizedWords = WORDS.map((w) => normalize(w)).filter((w) =>
-    isValidWordLength(w),
-  );
-  const normalizedValidWords = VALID_WORDS.map((w) => normalize(w)).filter(
-    (w) => isValidWordLength(w),
-  );
-
+  // Use pre-computed normalized word lists (much faster!)
   if (
-    !normalizedWords.includes(normalizedGuess) &&
-    !normalizedValidWords.includes(normalizedGuess)
+    !NORMALIZED_WORDS.includes(normalizedGuess) &&
+    !NORMALIZED_VALID_WORDS.includes(normalizedGuess)
   ) {
     showMessage("Palabra no válida", "error");
     shakeRow();
